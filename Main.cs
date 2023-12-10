@@ -55,7 +55,7 @@ namespace SkinStealer
     [HarmonyPatch(typeof(TosAbilityPanelListItem),"HandlePlayPhaseChanged")]
     public class AddJailButton
     {
-        public static bool canJail = true;
+        public static bool canJail = false;
         public static int lastTarget = -1;
         public static int lastTargetFresh = -1;
         static void Postfix(PlayPhaseState playPhase, ref TosAbilityPanelListItem __instance)
@@ -65,8 +65,9 @@ namespace SkinStealer
             {
                 canJail = false;
             }
+            player.role=Service.Game.Sim.simulation.myIdentity.Data.role;
 
-            if (Main.phase == PlayPhase.FIRST_DAY)
+            if (Main.phase == PlayPhase.FIRST_DAY&&player.role==Role.JAILOR)
             {
                 lastTarget = -1;
                 lastTargetFresh = -1;
