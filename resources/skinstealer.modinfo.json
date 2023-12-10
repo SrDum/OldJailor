@@ -1,0 +1,11 @@
+{
+  "HarmonyId": "dum.oldjailor",
+  "DisplayName": "ToS1 Jailor",
+  "Authors": ["Dum"],
+  "Description": "Bring back the old Jailor UI from town of salem 1 (except for death note, can't do that one)",
+  "Version": "1.0.0",
+  "Platforms": ["Windows", "Mac"],
+  "RequiredMods": [],
+  "ConflictingMods": [],
+  "Settings": {}
+}
