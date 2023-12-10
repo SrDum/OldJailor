@@ -78,8 +78,10 @@ namespace SkinStealer
                  &&__instance.characterPosition!=lastTarget&& Main.phase != PlayPhase.DAY&&Main.phase!=PlayPhase.FIRST_DAY
                  )
             {
-                
-                __instance.choice2Sprite.sprite = LoadEmbeddedResources.LoadSprite("OldJailor.resources.jail.png");
+                if (!ModStates.IsLoaded("alchlcsystm.recolors"))
+                { 
+                    __instance.choice2Sprite.sprite = LoadEmbeddedResources.LoadSprite("OldJailor.resources.jail.png");
+                }
                 __instance.choice2Text.text = "Jail";
                 __instance.choice2ButtonCanvasGroup.EnableRenderingAndInteraction();
                 if (__instance.characterPosition == lastTargetFresh)
