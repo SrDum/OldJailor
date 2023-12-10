@@ -20,7 +20,7 @@ namespace SkinStealer
     public class Main
     {
 
-        public static PlayPhase phase = PlayPhase.FIRST_DISCUSSION;
+        public static PlayPhase phase = PlayPhase.FIRST_DAY;
         
         public void Start()
         {
@@ -37,6 +37,10 @@ namespace SkinStealer
             if (playerIdentityData.role == Role.JAILOR)
             { 
                 __instance.specialAbilityPanel.Hide();
+            }
+            else
+            {
+                AddJailButton.canJail = false;
             }
         }
         static void Postfix(PlayerIdentityData playerIdentityData, ref RoleCardPanel __instance)
