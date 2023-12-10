@@ -34,41 +34,41 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\BepInEx\core\0Harmony.dll</HintPath>
+          <HintPath>bin\Release\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\Assembly-CSharp.dll</HintPath>
+          <HintPath>bin\Release\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="SalemModLoader">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\BepInEx\plugins\SalemModLoader.dll</HintPath>
+          <HintPath>bin\Release\SalemModLoader.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="Unity.TextMeshPro">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\Unity.TextMeshPro.dll</HintPath>
+          <HintPath>bin\ReleaseUnity.TextMeshPro.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.ImageConversionModule">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.ImageConversionModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextCoreTextEngineModule">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UI">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.UI.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.UI.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UIElementsModule">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.UIElementsModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UIElementsNativeModule">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.UIElementsNativeModule.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.UIElementsNativeModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UIModule">
-          <HintPath>..\..\..\Library\Application Support\Steam\steamapps\common\Town of Salem 2\TownOfSalem2.app\Contents\Resources\Data\Managed\UnityEngine.UIModule.dll</HintPath>
+          <HintPath>bin\Release\UnityEngine.UIModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
