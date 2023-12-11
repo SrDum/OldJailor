@@ -43,7 +43,7 @@ namespace SkinStealer
     [HarmonyPatch(typeof(RoleCardPanel), "ValidateSpecialAbilityPanel")]
     public class player2
     {
-        static void Postfix(PlayerIdentityData playerIdentityData, ref RoleCardPanel __instance)
+        static void Postfix(ref RoleCardPanel __instance)
         {
             if (Pepper.GetMyRole()==Role.JAILOR)
             {
