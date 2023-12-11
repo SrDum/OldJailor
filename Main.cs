@@ -33,7 +33,7 @@ namespace SkinStealer
     {
         static void Postfix(PlayerIdentityData playerIdentityData, ref RoleCardPanel __instance)
         {
-            if (Pepper.GetMyRole()==Role.JAILOR)
+            if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
             {
                 __instance.specialAbilityPanel.Hide();
             }
@@ -67,20 +67,20 @@ namespace SkinStealer
                 canJail = false;
             }
 
-            if (!Pepper.AmIAlive()) canJail = false;
+            if (!Service.Game.Sim.info.myDiscussionPlayer.Data.alive) canJail = false;
             
-            if (Main.phase == PlayPhase.FIRST_DAY&&Pepper.GetMyRole()==Role.JAILOR)
+            if (Main.phase == PlayPhase.FIRST_DAY&&Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
             {
                 lastTarget = -1;
                 lastTargetFresh = -1;
                 canJail = true;
             }
-            if (Main.phase == PlayPhase.FIRST_DAY&&Pepper.GetMyRole()==Role.AMNESIAC)
+            if (Main.phase == PlayPhase.FIRST_DAY&&Service.Game.Sim.simulation.myIdentity.Data.role==Role.AMNESIAC)
             {
                 lastTarget = -1;
                 lastTargetFresh = -1;
             }
-            if (canJail&& Pepper.GetMyRole()==Role.JAILOR && __instance.playerRole !=Role.JAILOR && Main.phase !=PlayPhase.NIGHT && Main.phase !=PlayPhase.NIGHT_END_CINEMATIC &&
+            if (canJail&& Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR && __instance.playerRole !=Role.JAILOR && Main.phase !=PlayPhase.NIGHT && Main.phase !=PlayPhase.NIGHT_END_CINEMATIC &&
                  Main.phase !=PlayPhase.NIGHT_WRAP_UP && Main.phase!=PlayPhase.WHO_DIED_AND_HOW&& Main.phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
                  &&__instance.characterPosition!=lastTarget&& Main.phase != PlayPhase.DAY&&Main.phase!=PlayPhase.FIRST_DAY
                  )
