@@ -45,7 +45,7 @@ namespace SkinStealer
     {
         static void Postfix(ref RoleCardPanel __instance)
         {
-            if (Pepper.GetMyRole()==Role.JAILOR)
+            if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
             {
                 __instance.specialAbilityPanel.Hide();
             }
