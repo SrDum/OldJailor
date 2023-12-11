@@ -66,9 +66,14 @@ namespace SkinStealer
             int lastTarget = AddJailButton.lastTarget;
             int lastTargetFresh = AddJailButton.lastTargetFresh;
             PlayPhase phase = Service.Game.Sim.info.gameInfo.Data.playPhase;
+            if (Service.Game.Sim.info.roleCardObservation.Data.specialAbilityRemaining == 0 ||
+                !Service.Game.Sim.info.myDiscussionPlayer.Data.alive)
+            {
+                canJail = false;
+            }
             if (canJail && __instance.playerRole !=Role.JAILOR && phase !=PlayPhase.NIGHT && phase !=PlayPhase.NIGHT_END_CINEMATIC &&
                 phase !=PlayPhase.NIGHT_WRAP_UP && phase!=PlayPhase.WHO_DIED_AND_HOW&& phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
-                &&__instance.characterPosition!=lastTarget&& phase != PlayPhase.DAY&&phase!=PlayPhase.FIRST_DAY
+                &&__instance.characterPosition!=lastTarget&& phase != PlayPhase.DAY&&phase!=PlayPhase.FIRST_DAY&&phase!=PlayPhase.NONE
                )
             {
                 if (!ModStates.IsLoaded("alchlcsystm.recolors"))

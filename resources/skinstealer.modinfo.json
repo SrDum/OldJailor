@@ -11,7 +11,7 @@
     "CheckboxSettings": [
       {
         "Name": "Safe Mode",
-        "Description": "Still keeps the default jail buttons available, in case somthing goes wrong with the mod. THIS IS THE RECOMMENDED SETTING, AS THERE HAVE BEEN REPORTS OF THE MOD BUGGING OUT AND I HAVEN'T FOUND OUT WHY",
+        "Description": "Still keeps the default jail buttons available, in case somthing goes wrong with the mod. This is the recommended setting for now.",
         "DefaultValue": true,
         "AvailableInGame": true
       }]
