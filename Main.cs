@@ -31,27 +31,27 @@ namespace SkinStealer
     [HarmonyPatch(typeof(RoleCardPanel), "HandleOnMyIdentityChanged")]
     public class player
     {
-        public static Role role = Service.Game.Sim.simulation.myIdentity.Data.role;
-        static void Prefix(PlayerIdentityData playerIdentityData, ref RoleCardPanel __instance)
-        {
-            if (playerIdentityData.role == Role.JAILOR)
-            { 
-                __instance.specialAbilityPanel.Hide();
-                AddJailButton.canJail = true;
-            }
-            else
-            {
-                AddJailButton.canJail = false;
-            }
-        }
         static void Postfix(PlayerIdentityData playerIdentityData, ref RoleCardPanel __instance)
         {
-            if (playerIdentityData.role == Role.JAILOR)
+            if (Pepper.GetMyRole()==Role.JAILOR)
             {
                 __instance.specialAbilityPanel.Hide();
             }
         }
     }
+    
+    [HarmonyPatch(typeof(RoleCardPanel), "ValidateSpecialAbilityPanel")]
+    public class player2
+    {
+        static void Postfix(PlayerIdentityData playerIdentityData, ref RoleCardPanel __instance)
+        {
+            if (Pepper.GetMyRole()==Role.JAILOR)
+            {
+                __instance.specialAbilityPanel.Hide();
+            }
+        }
+    }
+
     
     [HarmonyPatch(typeof(TosAbilityPanelListItem),"HandlePlayPhaseChanged")]
     public class AddJailButton
@@ -66,20 +66,21 @@ namespace SkinStealer
             {
                 canJail = false;
             }
-            player.role=Service.Game.Sim.simulation.myIdentity.Data.role;
+
+            if (!Pepper.AmIAlive()) canJail = false;
             
-            if (Main.phase == PlayPhase.FIRST_DAY&&player.role==Role.JAILOR)
+            if (Main.phase == PlayPhase.FIRST_DAY&&Pepper.GetMyRole()==Role.JAILOR)
             {
                 lastTarget = -1;
                 lastTargetFresh = -1;
                 canJail = true;
             }
-            if (Main.phase == PlayPhase.FIRST_DAY&&player.role==Role.AMNESIAC)
+            if (Main.phase == PlayPhase.FIRST_DAY&&Pepper.GetMyRole()==Role.AMNESIAC)
             {
                 lastTarget = -1;
                 lastTargetFresh = -1;
             }
-            if (canJail&& player.role==Role.JAILOR && __instance.playerRole !=Role.JAILOR && Main.phase !=PlayPhase.NIGHT && Main.phase !=PlayPhase.NIGHT_END_CINEMATIC &&
+            if (canJail&& Pepper.GetMyRole()==Role.JAILOR && __instance.playerRole !=Role.JAILOR && Main.phase !=PlayPhase.NIGHT && Main.phase !=PlayPhase.NIGHT_END_CINEMATIC &&
                  Main.phase !=PlayPhase.NIGHT_WRAP_UP && Main.phase!=PlayPhase.WHO_DIED_AND_HOW&& Main.phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
                  &&__instance.characterPosition!=lastTarget&& Main.phase != PlayPhase.DAY&&Main.phase!=PlayPhase.FIRST_DAY
                  )
@@ -94,7 +95,11 @@ namespace SkinStealer
                 {
                     __instance.choice2Button.Select();
                 }
-                __instance.choice2Button.gameObject.SetActive(true);
+
+                if (!__instance.halo.activeSelf)
+                {
+                    __instance.choice2Button.gameObject.SetActive(true);
+                }
             }
 
             if (Main.phase == PlayPhase.NIGHT)
@@ -109,7 +114,7 @@ namespace SkinStealer
     {
         static bool Prefix(ref TosAbilityPanelListItem __instance)
         {
-            if (player.role != Role.JAILOR) return true;
+            if (Pepper.GetMyRole()!= Role.JAILOR) return true;
                 MenuChoiceMessage message = new MenuChoiceMessage();
                 message.choiceType = MenuChoiceType.SpecialAbility;
                 message.choiceMode = MenuChoiceMode.TargetPosition;
