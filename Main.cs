@@ -114,7 +114,7 @@ namespace SkinStealer
     {
         static bool Prefix(ref TosAbilityPanelListItem __instance)
         {
-            if (Pepper.GetMyRole()!= Role.JAILOR) return true;
+            if (Service.Game.Sim.simulation.myIdentity.Data.role!= Role.JAILOR) return true;
                 MenuChoiceMessage message = new MenuChoiceMessage();
                 message.choiceType = MenuChoiceType.SpecialAbility;
                 message.choiceMode = MenuChoiceMode.TargetPosition;
