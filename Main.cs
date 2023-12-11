@@ -19,8 +19,7 @@ namespace SkinStealer
     [Mod.SalemMod]
     public class Main
     {
-
-        public static PlayPhase phase = PlayPhase.FIRST_DAY;
+        public static PlayPhase p = PlayPhase.NONE;
         
         public void Start()
         {
@@ -35,6 +34,8 @@ namespace SkinStealer
         {
             if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
             {
+                ensureButtons.reload = true;
+                if (ModSettings.GetBool("Safe Mode")) return;
                 __instance.specialAbilityPanel.Hide();
             }
         }
@@ -45,13 +46,52 @@ namespace SkinStealer
     {
         static void Postfix(ref RoleCardPanel __instance)
         {
-            if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
+            if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR&&!ModSettings.GetBool("Safe Mode"))
             {
+                 ensureButtons.reload = true;
+                if (ModSettings.GetBool("Safe Mode")) return;
                 __instance.specialAbilityPanel.Hide();
             }
         }
     }
+    [HarmonyPatch(typeof(TosAbilityPanelListItem),"Update")]
+    public class ensureButtons
+    {
+        public static bool reload = false;
 
+        public static void Postfix(ref TosAbilityPanelListItem __instance)
+        {
+            if (!reload) return;
+            bool canJail = true;
+            int lastTarget = AddJailButton.lastTarget;
+            int lastTargetFresh = AddJailButton.lastTargetFresh;
+            PlayPhase phase = Service.Game.Sim.info.gameInfo.Data.playPhase;
+            if (canJail && __instance.playerRole !=Role.JAILOR && phase !=PlayPhase.NIGHT && phase !=PlayPhase.NIGHT_END_CINEMATIC &&
+                phase !=PlayPhase.NIGHT_WRAP_UP && phase!=PlayPhase.WHO_DIED_AND_HOW&& phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
+                &&__instance.characterPosition!=lastTarget&& phase != PlayPhase.DAY&&phase!=PlayPhase.FIRST_DAY
+               )
+            {
+                if (!ModStates.IsLoaded("alchlcsystm.recolors"))
+                { 
+                    __instance.choice2Sprite.sprite = LoadEmbeddedResources.LoadSprite("OldJailor.resources.jail.png");
+                }
+                __instance.choice2Text.text = "Jail";
+                __instance.choice2ButtonCanvasGroup.EnableRenderingAndInteraction();
+                if (__instance.characterPosition == lastTargetFresh)
+                {
+                    __instance.choice2Button.Select();
+                }
+
+                if (!__instance.halo.activeSelf)
+                {
+                    __instance.choice2Button.gameObject.SetActive(true);
+                }
+            }
+
+            reload = false;
+        }
+
+    }
     
     [HarmonyPatch(typeof(TosAbilityPanelListItem),"HandlePlayPhaseChanged")]
     public class AddJailButton
@@ -61,28 +101,28 @@ namespace SkinStealer
         public static int lastTargetFresh = -1;
         static void Postfix(PlayPhaseState playPhase, ref TosAbilityPanelListItem __instance)
         {
-            Main.phase = playPhase.playPhase;
-            if (Service.Game.Sim.info.roleCardObservation.Data.specialAbilityRemaining==0)
+            PlayPhase phase = playPhase.playPhase;
+            if (phase == PlayPhase.FIRST_DAY || phase == PlayPhase.NONE)
+            {
+                lastTarget = -1;
+                lastTargetFresh = -1;
+            }
+
+            if (Service.Game.Sim.simulation.myIdentity.Data.role == Role.JAILOR)
+            {
+                canJail = true;
+            }
+            
+            if (Service.Game.Sim.info.roleCardObservation.Data.specialAbilityRemaining == 0 ||
+                !Service.Game.Sim.info.myDiscussionPlayer.Data.alive)
             {
                 canJail = false;
             }
-
-            if (!Service.Game.Sim.info.myDiscussionPlayer.Data.alive) canJail = false;
             
-            if (Main.phase == PlayPhase.FIRST_DAY&&Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
-            {
-                lastTarget = -1;
-                lastTargetFresh = -1;
-                canJail = true;
-            }
-            if (Main.phase == PlayPhase.FIRST_DAY&&Service.Game.Sim.simulation.myIdentity.Data.role==Role.AMNESIAC)
-            {
-                lastTarget = -1;
-                lastTargetFresh = -1;
-            }
-            if (canJail&& Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR && __instance.playerRole !=Role.JAILOR && Main.phase !=PlayPhase.NIGHT && Main.phase !=PlayPhase.NIGHT_END_CINEMATIC &&
-                 Main.phase !=PlayPhase.NIGHT_WRAP_UP && Main.phase!=PlayPhase.WHO_DIED_AND_HOW&& Main.phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
-                 &&__instance.characterPosition!=lastTarget&& Main.phase != PlayPhase.DAY&&Main.phase!=PlayPhase.FIRST_DAY
+            Console.Out.Write("canJail: "+canJail);
+            if (canJail&& Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR && __instance.playerRole !=Role.JAILOR && phase !=PlayPhase.NIGHT && phase !=PlayPhase.NIGHT_END_CINEMATIC &&
+                 phase !=PlayPhase.NIGHT_WRAP_UP && phase!=PlayPhase.WHO_DIED_AND_HOW&& phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
+                 &&__instance.characterPosition!=lastTarget&& phase != PlayPhase.DAY&&phase!=PlayPhase.FIRST_DAY
                  )
             {
                 if (!ModStates.IsLoaded("alchlcsystm.recolors"))
@@ -102,7 +142,7 @@ namespace SkinStealer
                 }
             }
 
-            if (Main.phase == PlayPhase.NIGHT)
+            if (phase == PlayPhase.NIGHT)
             {
                 lastTarget = lastTargetFresh;
             }
@@ -129,5 +169,7 @@ namespace SkinStealer
                 return false;
         }
     }
+    
+    
     
 }
