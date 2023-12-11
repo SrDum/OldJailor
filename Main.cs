@@ -37,6 +37,7 @@ namespace SkinStealer
             if (playerIdentityData.role == Role.JAILOR)
             { 
                 __instance.specialAbilityPanel.Hide();
+                AddJailButton.canJail = true;
             }
             else
             {
@@ -66,12 +67,17 @@ namespace SkinStealer
                 canJail = false;
             }
             player.role=Service.Game.Sim.simulation.myIdentity.Data.role;
-
+            
             if (Main.phase == PlayPhase.FIRST_DAY&&player.role==Role.JAILOR)
             {
                 lastTarget = -1;
                 lastTargetFresh = -1;
                 canJail = true;
+            }
+            if (Main.phase == PlayPhase.FIRST_DAY&&player.role==Role.AMNESIAC)
+            {
+                lastTarget = -1;
+                lastTargetFresh = -1;
             }
             if (canJail&& player.role==Role.JAILOR && __instance.playerRole !=Role.JAILOR && Main.phase !=PlayPhase.NIGHT && Main.phase !=PlayPhase.NIGHT_END_CINEMATIC &&
                  Main.phase !=PlayPhase.NIGHT_WRAP_UP && Main.phase!=PlayPhase.WHO_DIED_AND_HOW&& Main.phase!=PlayPhase.POST_TRIAL_WHO_DIED_AND_HOW
