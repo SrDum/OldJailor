@@ -1,17 +1,10 @@
 ﻿using System;
-using Game.Characters;
 using Game.Interface;
-using Game.Interface.Customization;
 using SML;
-using UnityEngine;
 using HarmonyLib;
-using Home.Shared.Enums;
 using Server.Shared.Info;
 using Server.Shared.Messages;
 using Server.Shared.State;
-using Services;
-using UnityEngine.UIElements;
-using UnityEngine.Events;
 using Service = Services.Service;
 
 namespace SkinStealer
@@ -19,8 +12,6 @@ namespace SkinStealer
     [Mod.SalemMod]
     public class Main
     {
-        public static PlayPhase p = PlayPhase.NONE;
-        
         public void Start()
         {
             Console.Out.Write(("[Old Jailor] has loaded!"));
@@ -34,7 +25,7 @@ namespace SkinStealer
         {
             if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR)
             {
-                ensureButtons.reload = true;
+                ensureButtons.setTrue();
                 if (ModSettings.GetBool("Safe Mode")) return;
                 __instance.specialAbilityPanel.Hide();
             }
@@ -48,7 +39,7 @@ namespace SkinStealer
         {
             if (Service.Game.Sim.simulation.myIdentity.Data.role==Role.JAILOR&&!ModSettings.GetBool("Safe Mode"))
             {
-                 ensureButtons.reload = true;
+                 ensureButtons.setTrue();
                 if (ModSettings.GetBool("Safe Mode")) return;
                 __instance.specialAbilityPanel.Hide();
             }
@@ -57,11 +48,28 @@ namespace SkinStealer
     [HarmonyPatch(typeof(TosAbilityPanelListItem),"Update")]
     public class ensureButtons
     {
-        public static bool reload = false;
+        public static bool[] reload =
+            { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ,false};
+
+        public static void setFalse()
+        {
+            for (int x = 0; x < 16; x++)
+            {
+                reload[x] = false;
+            }
+        }
+        public static void setTrue()
+        {
+            for (int x = 0; x < 16; x++)
+            {
+                reload[x] = true;
+            }
+        }
+
 
         public static void Postfix(ref TosAbilityPanelListItem __instance)
         {
-            if (!reload) return;
+            if (!reload[__instance.characterPosition]) return;
             bool canJail = true;
             int lastTarget = AddJailButton.lastTarget;
             int lastTargetFresh = AddJailButton.lastTargetFresh;
@@ -93,7 +101,7 @@ namespace SkinStealer
                 }
             }
 
-            reload = false;
+            reload[__instance.characterPosition] = false;
         }
 
     }
